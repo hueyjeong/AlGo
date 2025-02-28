@@ -7,7 +7,7 @@ class Main {
 
         int n = Integer.parseInt(br.readLine());
         MinHeap mh = new MinHeap(n);
-        
+
         for (int i = 0; i < n; i++) {
             int input = Integer.parseInt(br.readLine());
 
@@ -45,7 +45,7 @@ class Main {
 
             int current = size;
             size++;
-            while (current != 0) {
+            while (current > 0) {
                 int parent = getParent(current);
                 if (tree[parent] > tree[current]) {
                     swap(parent, current);
@@ -74,12 +74,11 @@ class Main {
                     sc = c2;
                 }
 
-                if (sc != current) {
-                    swap(current, sc);
-                    current = sc;
-                } else {
+                if (sc == current) {
                     break;
                 }
+                swap(current, sc);
+                current = sc;
             }
 
             return value;
