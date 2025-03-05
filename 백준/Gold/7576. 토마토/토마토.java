@@ -1,18 +1,23 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int m = sc.nextInt();
-        int n = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer tok = new StringTokenizer(br.readLine());
+        int m = Integer.parseInt(tok.nextToken());
+        int n = Integer.parseInt(tok.nextToken());
         int[][] tomatoes = new int[n][];
         for (int i = 0; i < n; i++) {
             tomatoes[i] = new int[m];
         }
         Queue<Tuple> queue = new ArrayDeque<>();
         for (int i = 0; i < n; i++) {
+            tok = new StringTokenizer(br.readLine());
             for (int j = 0; j < m; j++) {
-                tomatoes[i][j] = sc.nextInt();
+                tomatoes[i][j] = Integer.parseInt(tok.nextToken());
                 if (tomatoes[i][j] == 1) {
                     queue.add(new Tuple(j, i, 0));
                 }
