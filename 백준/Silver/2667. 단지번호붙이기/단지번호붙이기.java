@@ -8,11 +8,10 @@ public class Main {
         int n = Integer.parseInt(br.readLine());
 
         int[][] map = new int[n][n];
-        int[][] arr = new int[n][n];
 
         Stack<Point> stack = new Stack<>();
 
-        int k = 1;
+        int k = 2;
         for (int i = 0; i < n; i++) {
             String str = br.readLine();
             for (int j = 0; j < n; j++) {
@@ -23,13 +22,13 @@ public class Main {
             }
         }
 
-        Map<Integer, Integer> dazis = new HashMap<>();
+        Map<Integer, Integer> dazis = new HashMap<>(k);
         while (!stack.isEmpty()) {
             Point p = stack.pop();
-            if (p.x < 0 || p.y < 0 || p.x >= n || p.y >= n || arr[p.y][p.x] != 0 || map[p.y][p.x] == 0)
+            if (p.x < 0 || p.y < 0 || p.x >= n || p.y >= n || map[p.y][p.x] > 1 || map[p.y][p.x] == 0)
                 continue;
 
-            arr[p.y][p.x] = p.num;
+            map[p.y][p.x] = p.num;
             if (!dazis.containsKey(p.num))
                 dazis.put(p.num, 0);
             dazis.put(p.num, dazis.get(p.num) + 1);
