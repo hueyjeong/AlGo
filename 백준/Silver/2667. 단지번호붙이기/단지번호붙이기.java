@@ -8,7 +8,7 @@ public class Main {
 
         int[][] map = new int[n][n];
 
-        Stack<int[]> stack = new Stack<>();
+        Stack<Point> stack = new Stack<>();
         List<Integer> arr = new ArrayList<>(n * n);
 
         for (int i = 0; i < n; i++) {
@@ -20,21 +20,21 @@ public class Main {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (map[i][j] == 1) {
-                    stack.push(new int[]{j, i});
+                    stack.push(new Point(j, i));
 
                     int sum = 0;
                     while (!stack.isEmpty()) {
-                        int[] p = stack.pop();
-                        if (p[0] < 0 || p[1] < 0 || p[0] >= n || p[1] >= n || map[p[1]][p[0]] == 0)
+                        Point p = stack.pop();
+                        if (p.x < 0 || p.y < 0 || p.x >= n || p.y >= n || map[p.y][p.x] == 0)
                             continue;
 
-                        map[p[1]][p[0]] = 0;
+                        map[p.y][p.x] = 0;
                         sum++;
 
-                        stack.push(new int[]{p[0] - 1, p[1]});
-                        stack.push(new int[]{p[0] + 1, p[1]});
-                        stack.push(new int[]{p[0], p[1] + 1});
-                        stack.push(new int[]{p[0], p[1] - 1});
+                        stack.push(new Point(p.x - 1, p.y));
+                        stack.push(new Point(p.x + 1, p.y));
+                        stack.push(new Point(p.x, p.y + 1));
+                        stack.push(new Point(p.x, p.y - 1));
                     }
                     arr.add(sum);
                 }
@@ -49,5 +49,15 @@ public class Main {
         }
         System.out.println(sb);
 
+    }
+
+    static class Point {
+        public int x;
+        public int y;
+
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
     }
 }
