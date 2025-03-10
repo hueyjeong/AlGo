@@ -10,24 +10,28 @@ public class Main {
         StringTokenizer tok = new StringTokenizer(br.readLine());
 
         int[][] arr = new int[n][2];
-        Map<Integer, Integer> map = new HashMap<>();
+        int[][] firstOrder = new int[n][];
         for (int i = 0; i < n; i++) {
             arr[i][0] = i;
             arr[i][1] = Integer.parseInt(tok.nextToken());
+            firstOrder[i] = arr[i];
         }
         Arrays.sort(arr, Comparator.comparingInt((int[] a) -> a[1]));
-        int k = 0;
+        int k = -1;
+        int prev = Integer.MIN_VALUE;
         for (int i = 0; i < n; i++) {
-            if (!map.containsKey(arr[i][1])) {
-                map.put(arr[i][1], k++);
+            if (arr[i][1] != prev) {
+                prev = arr[i][1];
+                k++;
             }
-            arr[i][1] = map.get(arr[i][1]);
+            arr[i][1] = k;
         }
-        Arrays.sort(arr, Comparator.comparingInt((int[] a) -> a[0]));
         for (int i = 0; i < n; i++) {
-            bw.write(arr[i][1] + " ");
+            bw.write(firstOrder[i][1] + " ");
         }
         bw.flush();
+        bw.close();
+        br.close();
     }
 
 }
