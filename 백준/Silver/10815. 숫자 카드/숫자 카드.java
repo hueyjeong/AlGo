@@ -8,11 +8,11 @@ public class Main {
 
         StringTokenizer tok = new StringTokenizer(br.readLine());
 
-        Map<Integer, Boolean> map = new HashMap<>();
+        int[] arr = new int[20000002];
 
         for (int i = 0; i < n; i++) {
             int v = Integer.parseInt(tok.nextToken());
-            map.put(v, true);
+            arr[v + 10000001] = 1;
         }
 
         StringBuilder sb = new StringBuilder();
@@ -20,11 +20,7 @@ public class Main {
         tok = new StringTokenizer(br.readLine());
         for (int i = 0; i < m; i++) {
             int v = Integer.parseInt(tok.nextToken());
-            if (map.getOrDefault(v, false)) {
-                sb.append("1 ");
-            } else {
-                sb.append("0 ");
-            }
+            sb.append(arr[v + 10000001]).append(' ');
         }
 
         System.out.println(sb);
