@@ -12,23 +12,16 @@ public class Main {
         BigInteger b;
         Queue<BigInteger> queue = new PriorityQueue<>();
         queue.offer(BigInteger.valueOf(1));
-        int zeros = 0;
         for (int i = 1; i <= n; i++) {
             queue.offer(BigInteger.valueOf(i));
         }
         while (queue.size() > 1) {
             a = queue.poll();
             b = queue.poll();
-            BigInteger c = a.multiply(b);
-            int mod10 = c.mod(BigInteger.TEN).intValue();
-            if (mod10 == 0) {
-                zeros++;
-                c = c.divide(BigInteger.TEN);
-            }
-            queue.offer(c);
+            queue.offer(a.multiply(b));
         }
 
-        bw.write(queue.poll() + "0".repeat(zeros) + "\n");
+        bw.write(queue.poll() + "\n");
         bw.flush();
     }
 }
