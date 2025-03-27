@@ -30,9 +30,11 @@ public class Main {
     }
 
     static void dfs(int x) {
+        if (visited[x] == 1)
+            return;
         visited[x] = 1;
         for (int i = 0; i < graph.length; i++) {
-            if (visited[i] == 0 && graph[x][i] == 1) {
+            if (graph[x][i] == 1) {
                 dfs(i);
             }
         }
