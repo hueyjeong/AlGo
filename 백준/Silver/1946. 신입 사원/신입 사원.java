@@ -15,7 +15,7 @@ public class Main {
             }
             scoresList.sort(Comparator.comparingInt(Participant::getA).thenComparing(Participant::getB));
             int minB = Integer.MAX_VALUE;
-            for (int i = 0; i < n; i++) {
+            for (int i = 0; i < scoresList.size(); i++) {
                 int b = scoresList.get(i).getB();
                 if (b < minB) {
                     minB = b;
@@ -24,7 +24,6 @@ public class Main {
             }
             for (int i = scoresList.size() - 1; i >= 1; i--) {
                 Participant me = scoresList.get(i);
-                if (me.isRemoved()) continue;
                 Participant other = scoresList.get(i - 1);
                 if (other.getC() < me.getB()) {
                     me.setRemoved(true);
@@ -32,7 +31,7 @@ public class Main {
             }
             scoresList.sort(Comparator.comparingInt(Participant::getB).thenComparing(Participant::getA));
             int minA = Integer.MAX_VALUE;
-            for (int i = 0; i < n; i++) {
+            for (int i = 0; i < scoresList.size(); i++) {
                 int a = scoresList.get(i).getA();
                 if (a < minA) {
                     minA = a;
@@ -41,7 +40,6 @@ public class Main {
             }
             for (int i = scoresList.size() - 1; i >= 1; i--) {
                 Participant me = scoresList.get(i);
-                if (me.isRemoved()) continue;
                 Participant other = scoresList.get(i - 1);
                 if (other.getC() < me.getA()) {
                     me.setRemoved(true);
