@@ -110,7 +110,9 @@ public class Main {
 						int sum = 0;
 						for(int k = 0; k < mask.length; k++) {
 							for(int l = 0; l < mask[k].length; l++) {
-								sum += p[i + k][j + l] * mask[k][l];
+								if (mask[k][l] == 1) {
+									sum += p[i + k][j + l];
+								}
 							}
 						}
 						max = Math.max(max, sum);
