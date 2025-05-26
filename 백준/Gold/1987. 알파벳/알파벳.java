@@ -1,13 +1,21 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
 public class Main {
     private static char[][] matrix;
+    private static Visit visit;
+    private static int alpha;
+    private static int r;
+    private static int c;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int r = Integer.parseInt(st.nextToken());
-        int c = Integer.parseInt(st.nextToken());
+        r = Integer.parseInt(st.nextToken());
+        c = Integer.parseInt(st.nextToken());
 
         matrix = new char[r][c];
 
@@ -17,18 +25,13 @@ public class Main {
                 matrix[i][j] = str.charAt(j);
             }
         }
-
-        int max = bar(0, 0, new Visit(new int[r]), 0, 1, r, c);
+        visit = new Visit(new int[r]);
+        alpha = 0;
+        int max = bar(0, 0, 1);
         System.out.println(max);
     }
 
-    static int bar(int x, int y, Visit visit, int alpha, int n, int r, int c) {
-        if (visit.isVisited(x, y)) {
-            return n;
-        }
-        if (containsAlpha(alpha, matrix[y][x])) {
-            return n;
-        }
+    static int bar(int x, int y, int n) {
         alpha = putAlpha(alpha, matrix[y][x]);
         visit.setVisit(x, y);
 
@@ -52,7 +55,7 @@ public class Main {
                 if (containsAlpha(alpha, matrix[newY][newX])) {
                     continue;
                 }
-                max = Math.max(max, bar(newX, newY, visit, alpha, n + 1, r, c));
+                max = Math.max(max, bar(newX, newY, n + 1));
             }
         }
         visit.unsetVisit(x, y);
