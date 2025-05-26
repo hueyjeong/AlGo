@@ -32,6 +32,7 @@ public class Main {
             return foo.n;
         }
         foo.putAlpha(matrix[p.y][p.x]);
+        foo.visit.setVisit(p.x, p.y);
 
         int max = foo.n;
         for (int i = -1; i <= 1; i++) {
@@ -52,9 +53,11 @@ public class Main {
                 if (foo.containsAlpha(matrix[newPoint.y][newPoint.x])) {
                     continue;
                 }
-                max = Math.max(max, bar(new Foo(newPoint, new Visit(visit.visited), foo.alpha, foo.n + 1), matrix, r, c));
+                max = Math.max(max, bar(new Foo(newPoint, visit, foo.alpha, foo.n + 1), matrix, r, c));
             }
         }
+        foo.visit.unsetVisit(p.x, p.y);
+        foo.deleteAlpha(matrix[p.y][p.x]);
 
         return max;
     }
@@ -70,8 +73,11 @@ public class Main {
             return (row & (1 << x)) > 0;
         }
 
-        public void visit(int x, int y) {
+        public void setVisit(int x, int y) {
             visited[y] |= (1 << x);
+        }
+        public void unsetVisit(int x, int y) {
+            visited[y] &= ~(1 << x);
         }
     }
 
@@ -94,6 +100,10 @@ public class Main {
         public void putAlpha(char c) {
             int a = c - 'A';
             alpha |= 1 << a;
+        }
+        public void deleteAlpha(char c) {
+            int a = c - 'A';
+            alpha &= ~(1 << a);
         }
     }
 
