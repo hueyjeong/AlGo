@@ -9,7 +9,7 @@ public class Main {
     private static int r;
     private static int c;
     private static int[] visited;
-    private static int[][] iii = { {1, 0}, {0, 1}, {-1, 0}, {0, -1} };
+    private static final int[][] iii = { {1, 0}, {0, 1}, {-1, 0}, {0, -1} };
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -36,10 +36,6 @@ public class Main {
         alpha |= 1 << a;
         visited[y] |= (1 << x);
 
-        if (alpha == 0x3FFFFFF) {
-            return n;
-        }
-
         int max = n;
         for (int[] ii : iii) {
             int newX = x + ii[0];
@@ -54,7 +50,11 @@ public class Main {
             if ((alpha & 1 << a) > 0) {
                 continue;
             }
-            max = Math.max(max, bar(newX, newY, n + 1));
+            int result = bar(newX, newY, n + 1);
+            if (result >= 26) {
+                return result;
+            }
+            max = Math.max(max, result);
         }
 
         a = matrix[y][x] - 'A';
