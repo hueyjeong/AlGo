@@ -4,26 +4,35 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-    private static long[] arr;
+    private static int[] sums;
+    private static int[] arr;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken());
-        long s = Integer.parseInt(st.nextToken());
+        int s = Integer.parseInt(st.nextToken());
 
-        arr = new long[n];
+        sums = new int[n];
+        arr = new int[n];
+
         st = new StringTokenizer(br.readLine());
-        long sum = 0;
+        int sum = 0;
         for (int i = 0; i < n; i++) {
             int x = Integer.parseInt(st.nextToken());
+            arr[i] = x;
             sum += x;
-            arr[i] = sum;
+            sums[i] = sum;
         }
         int ans = 0;
         for (int i = n - 1; i >= 0; i--) {
             boolean found = false;
             for (int j = 0; j < n - i; j++) {
-                long temp = getSum(j, j + i);
+                long temp;
+                if (j == 0) {
+                    temp =  sums[j + i];
+                } else {
+                    temp = sums[j + i] - sums[j - 1];
+                }
                 if (temp >= s) {
                     ans = i + 1;
                     found = true;
@@ -35,13 +44,5 @@ public class Main {
             }
         }
         System.out.println(ans);
-    }
-
-    private static long getSum(int from, int to) {
-        if (from == 0) {
-            return arr[to];
-        } else {
-            return arr[to] - arr[from - 1];
-        }
     }
 }
