@@ -38,12 +38,13 @@ public class Main {
             }
             visited[v] = true;
 
-            if (weights[v] > w) {
-                weights[v] = w;
-            }
             Map<Integer, Integer> vv = map.getOrDefault(v, new HashMap<>());
             for (int key : vv.keySet()) {
-                pq.offer(new int[]{key, w + vv.get(key)});
+                int ww = vv.get(key) + w;
+                if (weights[key] > ww) {
+                    weights[key] = ww;
+                    pq.offer(new int[]{key, ww});
+                }
             }
         }
 
