@@ -1,0 +1,27 @@
+// Run by Node.js
+const readline = require('readline');
+
+const m = 1_000_000_007n;
+
+function foo(a, b) {
+	if (a >= b) {
+		return a;
+	}
+	const mid = (a + b) / 2n;
+	
+	const x = foo(a, mid);
+	const y = foo(mid + 1n, b);
+	
+	return (x * y) % m;
+}
+
+(async () => {
+	let rl = readline.createInterface({ input: process.stdin });
+	
+	for await (const line of rl) {
+		console.log((foo(1n, BigInt(line)) % m).toString().trimEnd('n'));
+		rl.close();
+	}
+	
+	process.exit();
+})();
