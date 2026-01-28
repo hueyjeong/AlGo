@@ -1,0 +1,31 @@
+// Run by Node.js
+const readline = require('readline');
+
+const getGCD = (a, b) => {
+	while (b !== 0) {
+		const r = a % b;
+		a = b;
+		b = r;
+	}
+	return a;
+};
+
+(async () => {
+	let rl = readline.createInterface({ input: process.stdin });
+	
+	const arr = [];
+	for await (const line of rl) {
+		arr.push(... line.split(' ').map((x) => parseInt(x)));
+		rl.close();
+	}
+	let a = arr[0] * arr[2];
+	let b = arr[1];
+	const gcd = getGCD(a, b);
+	a = a / gcd;
+	b = b / gcd;
+
+	console.log(`${a} ${b}`);
+	
+	
+	process.exit();
+})();
