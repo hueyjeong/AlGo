@@ -1,0 +1,30 @@
+// Run by Node.js
+const readline = require('readline');
+
+const diff = 32;
+
+function isUpperCase (ch) {
+	return ch >= 65 && ch <= 90;
+}
+
+function flip(ch) {
+	return String.fromCharCode(isUpperCase(ch) ? ch + diff : ch - diff);
+}
+
+(async () => {
+	let rl = readline.createInterface({ input: process.stdin });
+
+	const inputs = [];
+	for await (const line of rl) {
+		inputs.push(line);
+		rl.close();
+	}
+	const results = Array(inputs[1].length);
+	for (let i = 0; i < inputs[1].length; i++) {
+		results[i] = flip(inputs[1].charCodeAt(i));
+	}
+	console.log(results.join(''));
+	
+	
+	process.exit();
+})();
