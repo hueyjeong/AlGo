@@ -1,0 +1,20 @@
+// Run by Node.js
+const readline = require('readline');
+
+(async () => {
+	let rl = readline.createInterface({ input: process.stdin });
+
+	const input = [];
+	for await (const line of rl) {
+		input.push(line.split(' ').map(Number));
+	}
+	rl.close();
+	const [B, S, G, P] = input;
+	const b2s = B[0] - B[1];
+	const s2g = S[0] - S[1];
+	const g2p = G[0] - G[1];
+	// const p2d = P[0] + g2p - P[1];
+	console.log([b2s, s2g, g2p].join('\n'));
+	
+	process.exit();
+})();
