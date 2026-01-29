@@ -1,0 +1,36 @@
+// Run by Node.js
+const readline = require('readline');
+
+const hansuCode = (x) => {
+	const arr = Array.from(x.toString()).map(Number);
+	if (arr.length == 1) {
+		return true;
+	}
+	const v = arr[0] - arr[1];
+	for (let i = 0; i < arr.length - 1; i++) {
+		const diff = arr[i] - arr[i + 1];
+		if (diff !== v) {
+			return false;
+		}
+	}
+	return true;
+}
+
+(async () => {
+	let rl = readline.createInterface({ input: process.stdin });
+
+	for await (const line of rl) {
+		const M = Number(line);
+		let cnt = 0;
+		for (let i = 1; i <= M; i++) {
+			if (hansuCode(i)) {
+				cnt++;
+			}
+		}
+		console.log(cnt);
+		
+		rl.close();
+	}
+	
+	process.exit();
+})();
