@@ -1,0 +1,32 @@
+// Run by Node.js
+const readline = require('readline');
+
+(async () => {
+	let rl = readline.createInterface({ input: process.stdin });
+
+	const input = [];
+	for await (const line of rl) {
+		input.push(
+			line.split(' ').map(Number)
+		);
+		rl.close();
+	}
+	const N = input[0];
+	const A = input[1];
+	const B = input[2];
+	
+	const C = [];
+	for (let i = 0; i < N; i++) {
+		let cnt = 0;
+		for (let j = 0; j < N; j++) {
+			if (A[j] > A[i] && B[j] > B[i]) {
+				cnt++;
+			}
+		}
+		C.push(cnt);
+	}
+	
+	console.log(C.join(' '));
+	
+	process.exit();
+})();
