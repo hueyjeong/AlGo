@@ -1,0 +1,41 @@
+const readline = require('readline');
+let rl = readline.createInterface({
+	input: process.stdin,
+	output: process.stdout,
+});
+
+const groundMap = {
+	'#': 0,
+	'@': 2,
+	'0': 1
+}
+
+const input = [];
+rl.on('line', (line) => {
+	input.push(line.split(' '));
+	//rl.close();
+});
+
+rl.on('close', () => {
+	const [n, k] = input[0].map(Number);
+	const map = input.slice(1, n + 1);
+	const scoreMap = Array.from({length: n}, () => Array(n).fill(0));
+	let max = 0;
+	map.bang = (r, c) => {
+		if (r < 0 || r >= n || c < 0 || c >= n)
+			return;
+		scoreMap[r][c] += groundMap[map[r][c]];
+		max = Math.max(max, scoreMap[r][c]);
+	};
+	map.bomb = (r, c) => {
+		map.bang(r, c);
+		map.bang(r-1, c);
+		map.bang(r+1, c);
+		map.bang(r, c-1);
+		map.bang(r, c+1);
+	}
+	for (let i = n + 1; i < input.length; i++) {
+		map.bomb(...input[i].map((v) => Number(v) - 1));
+	}
+	console.log(max);
+})
