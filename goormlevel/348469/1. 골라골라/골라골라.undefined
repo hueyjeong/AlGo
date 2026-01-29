@@ -1,0 +1,34 @@
+// Run by Node.js
+const readline = require('readline');
+
+(async () => {
+	let rl = readline.createInterface({ input: process.stdin });
+
+	const input = [];
+	for await (const line of rl) {
+		input.push(line.split(' ').map(Number));
+	}
+	rl.close();
+	const N = input[0][0];
+	const result = [];
+	let max = 0;
+	for (let i = 1; i <= 3; i++) {
+		const arr = Array(N + 1).fill(false);
+		arr[i] = true;
+		
+		let cnt = 0;
+		
+		for (let j = 1; j <= N; j++) {
+			const [A, B, G] = input[j];
+			[arr[A], arr[B]] = [arr[B], arr[A]];
+			if (arr[G]) {
+				cnt++;
+			}
+		}
+		
+		result.push(cnt);
+	}
+	console.log(Math.max(...result));
+	
+	process.exit();
+})();
