@@ -1,0 +1,22 @@
+// Run by Node.js
+const readline = require('readline');
+
+const rythmCode = (x, s) => {
+	return Array.from(x.toString()).map(Number).reduce((acc, cur) => acc + cur, 0) == s;
+}
+
+(async () => {
+	let rl = readline.createInterface({ input: process.stdin });
+	
+	for await (const line of rl) {
+		const [m, s] = line.split(' ').map(Number);
+		let cnt = 0;
+		for (let i = 1; i <= m; i++) {
+			if (rythmCode(i, s)) cnt++;
+		}
+		console.log(cnt);
+		rl.close();
+	}
+	
+	process.exit();
+})();
