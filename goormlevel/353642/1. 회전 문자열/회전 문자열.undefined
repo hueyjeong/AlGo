@@ -1,0 +1,19 @@
+// Run by Node.js
+const readline = require('readline');
+
+(async () => {
+	let rl = readline.createInterface({ input: process.stdin });
+	const map = {
+		'0': '0',
+		'1': '1',
+		'8': '8',
+		'6': '9',
+		'9': '6'
+	};
+	for await (const line of rl) {
+		console.log(Array.from(line).map(ch => map[ch]).reverse().join(''));
+		rl.close();
+	}
+	
+	process.exit();
+})();
