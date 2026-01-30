@@ -1,0 +1,75 @@
+// Run by Node.js
+const readline = require('readline');
+
+const findCorner = (ps) => {
+	const map = { x: {}, y: {} };
+	for (let p of ps) {
+		if (!map.x[p.x]) {
+			map.x[p.x] = 0;
+		}
+		if (!map.y[p.y]) {
+			map.y[p.y] = 0;
+		}
+		map.x[p.x]++;
+		map.y[p.y]++;
+	}
+
+	const cy = Object.keys(map.y).map(Number).sort((a, b) => map.y[b] - map.y[a]);
+	const cx = Object.keys(map.x).map(Number).sort((a, b) => map.x[b] - map.x[a]);
+
+	return {y: cy[0], x: cx[0]};
+}
+
+(async () => {
+	let rl = readline.createInterface({ input: process.stdin });
+
+	const input = [];
+	for await (const line of rl) {
+		input.push(line.split(' ').map(Number));
+	}
+	rl.close();
+	const [n, q] = input[0];
+	const sq = input.slice(1, n + 1);
+	const qs = input.slice(n + 1);
+
+	for (const q of qs) {
+		const ps = [{y: q[0] - 1, x: q[1] - 1}, {y: q[2] - 1, x: q[3] - 1}, {y: q[4] - 1, x: q[5] - 1}];
+		const minY = ps.reduce((acc, v) => Math.min(acc, v.y), 2147483647);
+		const minX = ps.reduce((acc, v) => Math.min(acc, v.x), 2147483647);
+		const maxY = ps.reduce((acc, v) => Math.max(acc, v.y), -2147483648);
+		const maxX = ps.reduce((acc, v) => Math.max(acc, v.x), -2147483648);
+		const corner = findCorner(ps);
+		let sum = 0;
+		const length = maxX - minX + 1;
+		for (let y = minY, i = 0; y <= maxY; y++, i++) {
+			for (let x = minX; x <= maxX; x++) {
+				if (corner.y == minY && corner.x == minX) {
+					// ┌
+					if (x - minX < length - i) {
+						sum += sq[y][x];
+					}
+				} else if (corner.y == maxY && corner.x == minX) {
+					// └
+					if (x - minX <= i) {
+						sum += sq[y][x];
+					}
+				} else if (corner.y == minY && corner.x == maxX) {
+					// ┐
+					if (x - minX > i - 1) {
+						sum += sq[y][x];
+					}
+				} else {
+					// ┘
+					if (x - minX >= length - i - 1) {
+						sum += sq[y][x];
+					}
+				}
+			}
+		}
+		console.log(sum);
+	}
+	
+	
+	
+	process.exit();
+})();
