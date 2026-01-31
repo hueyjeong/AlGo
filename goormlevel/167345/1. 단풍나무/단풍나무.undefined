@@ -1,0 +1,87 @@
+// Run by Node.js
+const readline = require('readline');
+
+(async () => {
+	let rl = readline.createInterface({ input: process.stdin });
+
+	const input = [];
+	for await (const line of rl) {
+		input.push(line.split(' ').map(Number));
+	}
+	rl.close();
+
+	const n = input[0][0];
+	const park = input.slice(1);
+	const exists = Array.from({ length: n }, () => Array(n).fill(false));
+	const q = [];
+	let cnt = n * n;
+	q.push(null);
+
+	const pushValid = (r, c) => {
+		if (r <= -1 || r >= n || c <= -1 || c >= n) {
+			return;
+		}
+		q.push({ r, c });
+	}
+
+	const decrease = (r, c) => {
+		if (r <= -1 || r >= n || c <= -1 || c >= n) {
+			return false;
+		}
+		if (park[r][c] <= 0) {
+			return false;
+		}
+		park[r][c]--;
+		if (park[r][c] <= 0 && !exists[r][c]) {
+			exists[r][c] = true;
+			pushValid(r, c);
+			cnt--;
+			return false;
+		}
+		return true;
+	}
+	
+
+	const decreaseAround = (r, c) => {
+		let r1 = decrease(r - 1, c);
+		let r2 = decrease(r + 1, c);
+		let r3 = decrease(r, c + 1);
+		let r4 = decrease(r, c - 1);
+		return r1 || r2 || r3 || r4;
+	};
+
+	for (let r = 0; r < n; r++) {
+		for (let c = 0; c < n; c++) {
+			if (park[r][c] === 0) {
+				pushValid(r, c);
+				cnt--;
+			}
+		}
+	}
+
+	let day = 0;
+	while (cnt > 0) {
+		const item = q.shift();
+		if (item === null) {
+			day++;
+			q.push(null);
+			// console.log(park);
+			// console.log(q);
+			// console.log(cnt);
+			continue;
+		}
+		const [r, c] = [item.r, item.c];
+		if (decreaseAround(r, c)) {
+			pushValid(r, c);
+		}
+	}
+
+			// 	console.log(park);
+			// console.log(q);
+			// console.log(cnt);
+
+	console.log(day);
+	
+	
+	process.exit();
+})();
