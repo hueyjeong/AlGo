@@ -12,30 +12,18 @@ const readline = require('readline');
 
 	const n = input[0][0];
 	const park = input.slice(1);
-	const exists = Array.from({ length: n }, () => Array(n).fill(false));
 	const q = [];
 	let cnt = n * n;
 	q.push(null);
 
-	const pushValid = (r, c) => {
-		if (r <= -1 || r >= n || c <= -1 || c >= n) {
-			return;
-		}
-		q.push({ r, c });
-	}
-
 	const decrease = (r, c) => {
-		if (r <= -1 || r >= n || c <= -1 || c >= n) {
-			return false;
-		}
-		if (park[r][c] <= 0) {
+		if (r <= -1 || r >= n || c <= -1 || c >= n || park[r][c] <= 0) {
 			return false;
 		}
 		park[r][c]--;
-		if (park[r][c] <= 0 && !exists[r][c]) {
-			exists[r][c] = true;
-			pushValid(r, c);
+		if (park[r][c] === 0) {
 			cnt--;
+			q.push({ r, c });
 			return false;
 		}
 		return true;
@@ -53,7 +41,7 @@ const readline = require('readline');
 	for (let r = 0; r < n; r++) {
 		for (let c = 0; c < n; c++) {
 			if (park[r][c] === 0) {
-				pushValid(r, c);
+				q.push({ r, c });
 				cnt--;
 			}
 		}
@@ -65,21 +53,14 @@ const readline = require('readline');
 		if (item === null) {
 			day++;
 			q.push(null);
-			// console.log(park);
-			// console.log(q);
-			// console.log(cnt);
 			continue;
 		}
 		const [r, c] = [item.r, item.c];
 		if (decreaseAround(r, c)) {
-			pushValid(r, c);
+			q.push({r, c});
 		}
 	}
-
-			// 	console.log(park);
-			// console.log(q);
-			// console.log(cnt);
-
+	
 	console.log(day);
 	
 	
