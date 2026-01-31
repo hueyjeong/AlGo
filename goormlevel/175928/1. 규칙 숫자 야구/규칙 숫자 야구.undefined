@@ -1,0 +1,90 @@
+// Run by Node.js
+const readline = require('readline');
+
+(async () => {
+	let rl = readline.createInterface({ input: process.stdin });
+
+	const input = [];
+	for await (const line of rl) {
+		input.push(line.split('').map(Number));
+	}
+	rl.close();
+
+	const correct = input[0];
+	const answer = input[1];
+
+	const length = 4;
+
+	const isStrike = (idx, tempAnswer) => {
+		if (tempAnswer) {
+			return correct[idx] === tempAnswer[idx];
+		}
+		return correct[idx] === answer[idx];
+	}
+
+	const isBally = (idx, tempAns) => {
+		if (tempAns) {
+			return !isStrike(idx) && correct.includes(tempAns[idx]);
+		}
+		return !isStrike(idx) && correct.includes(answer[idx]);
+	}
+
+	const isFail = (idx, tempAns) => {
+		if (tempAns) {
+			return !isStrike(idx, tempAns) && !isBally(idx, tempAns);
+		}
+		return !isStrike(idx) && !isBally(idx);
+	}
+
+	const countStrike = () => {
+		let count = 0;
+		for (let i = 0; i < length; i++) {
+			if (isStrike(i)) {
+				count++;
+			}
+		}
+		return count;
+	}
+	let gameCount = 1;
+	//console.log(answer);
+	while (countStrike() < length) {
+		gameCount++;
+		let includesBall = false;
+		const notStrikes = [];
+		const tempAns = [...answer];
+		for (let i = 0; i < length; i++) {
+			if (isFail(i)) {
+				let temp = answer[i];
+				answer[i] = -1;
+				do {
+					temp = (temp + 1) % 10;
+				} while (answer.includes(temp));
+				answer[i] = temp;
+			}
+		}
+		for (let i = 0; i < length; i++) {
+			if (isBally(i, tempAns)) {
+				includesBall = true;
+			}
+			if (!isStrike(i, tempAns)) {
+				notStrikes.push({idx: i, value: answer[i]});
+			}
+		}
+		if (includesBall && notStrikes.length > 0) {
+			const f = notStrikes[0];
+			const l = notStrikes.pop();
+			for (let i = f.idx + 1; i < length; i++) {
+				if (isStrike(i, tempAns)) {
+					continue;
+				}
+				answer[i] = notStrikes.shift().value;
+			}
+			answer[f.idx] = l.value;
+		}
+		//console.log(answer);
+	}
+
+	console.log(gameCount);
+	
+	process.exit();
+})();
